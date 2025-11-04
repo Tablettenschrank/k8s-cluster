@@ -1,0 +1,6 @@
+namespace: nginx-website
+resources: 
+  - pvc.yaml
+  - deployment.yaml
+  - namespace.yaml
+  - service.yaml
