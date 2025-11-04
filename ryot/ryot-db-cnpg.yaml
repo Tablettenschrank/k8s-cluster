@@ -1,0 +1,23 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ryot-db
+  namespace: ryot
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+
+
+  bootstrap:
+    initdb:
+      database: ryot
+      owner: ryot
+
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: nfs-client

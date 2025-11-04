@@ -1,0 +1,4 @@
+namespace: cnpg-cluster
+resources: 
+  - namespace.yaml
+  - cluster-example-deployment.yaml

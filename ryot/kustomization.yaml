@@ -1,0 +1,6 @@
+namespace: ryot
+resources: 
+  - namespace.yaml
+  - ryot-secret.yaml
+  - ryot-db-cnpg.yaml
+  - ryot-deployment.yaml

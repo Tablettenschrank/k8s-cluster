@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ryot
+  labels:
+    tier: ryot
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: ryot
+  template:
+    metadata:
+      labels:
+        tier: ryot
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: postgres:16-alpine
+          env:
+            - name: PGCONN
+              valueFrom:
+                secretKeyRef:
+                  name: ryot-db-app
+                  key: uri
+          command:
+            - sh
+            - -c
+            - |
+              until psql "$PGCONN" -c '\q'; do
+                echo "waiting for postgres"
+                sleep 2
+              done
+      containers:
+        - name: ryot
+          image: ghcr.io/ignisda/ryot:v9
+          ports:
+          - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ryot-db-app
+                  key: uri
+
+            - name: TZ
+              value: Europe/Berlin
+            - name: FRONTEND_URL
+              value: "https://ryot.tablettenschrank.de"
+            - name: SERVER_ADMIN_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ryot-secrets
+                  key: access_token
+      restartPolicy: Always
+
+      volumes:
+        - name: db-creds
+          secret:
+            secretName: ryot-db-app
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ryot
+  labels:
+    tier: ryot
+  name: ryot
+spec:
+  ports:
+    - name: "8000"
+      port: 8000
+      targetPort: 8000
+  selector:
+    tier: ryot
+  type: LoadBalancer
+  loadBalancerIP: 10.10.20.232
