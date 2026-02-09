@@ -1,0 +1,25 @@
+# NGINX Gateway Fabric Configuration
+
+# Service configuration
+service:
+  type: LoadBalancer
+  # Uncomment and set your external IP address
+  # externalIPs:
+  #   - 192.168.1.100
+  loadBalancerIP: 10.20.91.3
+  annotations: {}
+    # metallb.universe.tf/address-pool: default
+
+# Gateway configuration
+# nginx:
+  # config:
+    # entries: {}
+
+# Resource limits
+# resources:
+#   limits:
+#     cpu: 500m
+#     memory: 512Mi
+#   requests:
+#     cpu: 100m
+#     memory: 128Mi

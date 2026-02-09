@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gateway-traefikg
+  namespace: gateway-traefik  # Lives with Traefik
+spec:
+  gatewayClassName: traefik
+  listeners:
+    # 1. HTTP Listener (Port 80)
+    - name: web
+      protocol: HTTP
+      port: 8000              # Matches Traefik container port
+      allowedRoutes:
+        namespaces:
+          from: All           # <--- THE MAGIC SETTING
+                              # This allows apps in ANY namespace to attach to this Gateway.
+
+    # 2. HTTPS Listener (Port 443) - Optional if you want TLS
+    # - name: websecure
+    #   protocol: HTTPS
+    #   port: 8443
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs: ...
+
+    # 3. SMTP Listener (Port 2525)
+    - name: smtp
+      protocol: TCP
+      port: 2525
+      allowedRoutes:
+        namespaces:
+          from: All

@@ -1,0 +1,16 @@
+# Kong Ingress Controller minimal configuration
+
+proxy:
+  type: LoadBalancer
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: "10.20.91.4"
+
+env:
+  database: "off"
+
+# Enable admin API for controller
+admin:
+  enabled: true
+  type: ClusterIP
+  http:
+    enabled: true

@@ -24,3 +24,33 @@ It works for me with the [nfs-subdir-external-provisioner](https://github.com/ku
    - 1 vCPU
    - 1 GB RAM
    - 8 GB Storage
+
+---
+
+# Gateways
+
+I also tested something with the Gateways, where i deployed 3 side by side and tested how good they run.
+I did it because i need an alternative to the Ingress Controller.
+More information in the README.md file in the Gateway Directory.
+
+
+Domain = tablettenschrank.de
+- [Traefik Gateway](https://github.com/traefik/traefik?tab=readme-ov-file) = https://web.t.k8s.tablettenschrank.de
+- [Nginx Gateway Fabric](https://github.com/nginx/nginx-gateway-fabric) = https://web.n.k8s.tablettenschrank.de
+- [Kong Gateway](https://developer.konghq.com/kubernetes-ingress-controller/) = https://web.k.k8s.tablettenschrank.de
+
+
+
+#### A simple flowchart how i set it up:
+```mermaid
+  flowchart TD
+    Router[OpnSense - Router ] -->|Traffic| NPM(Nginx Proxy Manager)
+    NPM -->|web.t.k8s.domain| D[Traefik Gateway] --> G[HTTPRoute] 
+    NPM -->|web.n.k8s.domain| E[Nginx Gateway Fabric] --> H[HTTPRoute]
+    NPM -->|web.k.k8s.domain| F[Kong Gateway] --> J[HTTPRoute]
+    K[ClusterIP]
+    G --> K
+    H --> K
+    J --> K
+```
+

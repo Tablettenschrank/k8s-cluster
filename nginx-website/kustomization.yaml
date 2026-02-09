@@ -2,5 +2,8 @@ namespace: nginx-website
 resources: 
   - pvc.yaml
   - deployment.yaml
-  - namespace.yaml
   - service.yaml
+  - namespace.yaml
+  - route-traefik.yaml
+  - route-nginx.yaml
+  - route-kong.yaml

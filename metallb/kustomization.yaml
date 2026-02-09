@@ -1,0 +1,9 @@
+resources:
+#  - namespace.yaml # already done by github
+  - metallb-config.yml
+  - https://github.com/metallb/metallb/config/native?ref=v0.15.3
+
+namespace: metallb-system
+
+
+# https://github.com/klaernie/k8s-internal/blob/main/_metallb-system/kustomization.yaml

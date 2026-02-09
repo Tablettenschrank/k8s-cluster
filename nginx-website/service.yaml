@@ -3,17 +3,13 @@ kind: Service
 metadata:
   labels:
     tier: application
-      #    env: dev
   name: nginx-deployment
   namespace: nginx-website
-
 spec:
+  type: ClusterIP
   ports:
-    - port: 8080
+    - port: 80 # Port exposed by the Service
       protocol: TCP
-      targetPort: 80
+      targetPort: 80 # Pod internal port for software as it was develpoed
   selector:
     run: nginx
-      #    env: dev
-  type: LoadBalancer
-  loadBalancerIP: 10.10.20.231

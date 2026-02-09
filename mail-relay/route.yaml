@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: mail-relay-route
+  namespace: mail-relay
+spec:
+  parentRefs:
+    - name: gateway-traefikg
+      namespace: gateway-traefik
+      sectionName: smtp
+  # hostnames:
+    # - ""
+  rules:
+    - backendRefs:
+        - name: mail-relay
+          port: 2525

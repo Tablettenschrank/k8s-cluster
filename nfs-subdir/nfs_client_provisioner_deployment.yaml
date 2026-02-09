@@ -1,9 +1,10 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: nfs-client-provisioner
   namespace: nfs-provisioner
 spec:
+  revisionHistoryLimit: 0
   replicas: 1
   selector:
     matchLabels:
@@ -26,11 +27,11 @@ spec:
             - name: PROVISIONER_NAME
               value: k8s-sigs.io/nfs-subdir-external-provisioner
             - name: NFS_SERVER
-              value: 10.10.20.41
+              value: 10.20.0.41
             - name: NFS_PATH
               value: /mnt/nfs/shares/k8s
       volumes:
         - name: nfs-client-root
           nfs:
-            server: 10.10.20.41
+            server: 10.20.0.41
             path: /mnt/nfs/shares/k8s

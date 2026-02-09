@@ -1,0 +1,23 @@
+# values.yaml
+
+deployment:
+  replicas: 2
+
+# Enable Gateway API Provider so Traefik knows how to read your Route files
+providers:
+  kubernetesGateway:
+    enabled: true
+    gatewayClass:
+      enabled: true
+
+# Corrected Service Config (Fixed typo 'serivce' -> 'service')
+service:
+  enabled: true
+  type: LoadBalancer
+  spec:
+    loadBalancerIP: 10.20.91.2
+
+# Disable the Helm-generated Gateway
+# We do this because you created your own 'gateway-traefikG' manually.
+gateway:
+  enabled: false

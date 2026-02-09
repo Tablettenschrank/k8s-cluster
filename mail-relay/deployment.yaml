@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mail-relay
+  labels:
+    tier: mail-relay
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: mail-relay
+  template:
+    metadata:
+      labels:
+        tier: mail-relay
+    spec:
+      containers:
+        - name: mail-relay
+          image: juanluisbaptiste/postfix:latest
+          ports:
+          - containerPort: 25  # Internal port - Postfix listens on port 25
+
+          # volumeMounts:
+          #   - name: localtime
+          #     mountPath: /etc/localtime
+          #     readOnly: true
+          envFrom:
+            - configMapRef:
+                name: mail-relay-config
+          env:
+            - name: TZ
+              value: Europe/Berlin
+
+      restartPolicy: Always
+
+      # volumes:
+      #   - name: localtime
+      #     hostPath:
+      #       path: /etc/localtime
+      #       type: File
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: mail-relay
+  labels:
+    tier: mail-relay
+  name: mail-relay
+spec:
+  ports:
+    - name: "smtp"
+      port: 2525        # External port - what clients connect to
+      targetPort: 25    # Maps to container's internal port 25
+  selector:
+    tier: mail-relay

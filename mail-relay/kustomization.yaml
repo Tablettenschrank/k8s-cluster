@@ -1,0 +1,6 @@
+namespace: mail-relay
+resources: 
+  - namespace.yaml
+  - deployment.yaml
+  - configmap.yaml
+  - route.yaml
